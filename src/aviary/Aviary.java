@@ -30,7 +30,7 @@ public class Aviary<T> {
     }
 
     public void addAnimal(T animal){
-        if (((Animal)animal).getAviarySize() == size) {
+        if (((Animal)animal).getAviarySize().getSize() <= size.getSize()) {
             System.out.println("Adding animal with key: " + animal.hashCode());
             this.animals.put(animal.hashCode(), animal);
         }
