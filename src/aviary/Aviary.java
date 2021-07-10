@@ -5,24 +5,29 @@ import animals.Animal;
 import java.util.HashMap;
 
 public class Aviary<T> {
-    private AviarySize size;
+    private int aviarySize;
+    private int aviaryFullness = 0;
     private HashMap<Integer, T> animals = new HashMap<>();
 
-    public Aviary(AviarySize size){
-        this.size = size;
+    public int getSize() {
+        return aviarySize;
     }
 
-    public AviarySize getSize() {
-        return size;
+    public int getAviaryFullness() {
+        return aviaryFullness;
     }
 
-    public void setSize(AviarySize size) {
+    public Aviary(int size){
+        this.aviarySize = size;
+    }
+
+    public void setSize(int size) {
         if (animals.size() != 0) {
             System.out.println("You can't change aviary size while there are animals in it.");
             return;
         }
-        this.size = size;
-        System.out.println("New size: " + this.size);
+        this.aviarySize = size;
+        System.out.println("New size: " + this.aviarySize);
     }
 
     public void setAnimals(HashMap<Integer, T> animals) {
@@ -30,17 +35,26 @@ public class Aviary<T> {
     }
 
     public void addAnimal(T animal){
-        if (((Animal)animal).getAviarySize().getSize() <= size.getSize()) {
-            System.out.println("Adding animal with key: " + animal.hashCode());
-            this.animals.put(animal.hashCode(), animal);
+        final int animalSize = ((Animal)animal).getAviarySize().getSize();
+        if (animalSize <= aviarySize && animalSize <= aviarySize - aviaryFullness ) {
+            if (this.animals.put(animal.hashCode(), animal) == null) {
+                System.out.println("Adding animal with key: " + animal.hashCode());
+                aviaryFullness += animalSize;
+            }
+            else
+                System.out.println("Animal with key: " + animal.hashCode() + " already exists.");
         }
         else
-            System.out.println("Wrong size.");
+            System.out.println("Not enough space in this aviary.");
     }
 
     public void removeAnimal(T animal){
-        System.out.println("Removing animal with key: " + animal.hashCode());
-        this.animals.remove(animal.hashCode());
+        if (this.animals.remove(animal.hashCode()) != null) {
+            aviaryFullness -= ((Animal)animal).getAviarySize().getSize();
+            System.out.println("Removing animal with key: " + animal.hashCode());
+        }
+        else
+            System.out.println("Animal with key: " + animal.hashCode() + " not found.");
     }
 
     public void removeAnimal(String name){

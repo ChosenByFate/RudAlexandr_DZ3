@@ -7,7 +7,7 @@ import food.*;
 public class Application {
     public static void main(String[] args) {
 
-        Aviary<Herbivore> aviaryHerbivore = new Aviary<>(AviarySize.MAX);
+        Aviary<Herbivore> aviaryHerbivore = new Aviary<>(5);
         aviaryHerbivore.addAnimal(new Deer("Hyena", AviarySize.MAX));
         aviaryHerbivore.addAnimal(new Duck("Duck", AviarySize.MAX));
         aviaryHerbivore.addAnimal(new EurasianHoopoe("EurasianHoopoe", AviarySize.MIN));
@@ -17,13 +17,12 @@ public class Application {
         aviaryHerbivore.removeAnimal(duck);
         System.out.println("__________________________________________________");
 
-        Aviary<Carnivorous> aviaryCarnivorous = new Aviary<>(AviarySize.LARGE);
-        aviaryCarnivorous.setSize(AviarySize.MEDIUM);
+        Aviary<Carnivorous> aviaryCarnivorous = new Aviary<>(10);
+        aviaryCarnivorous.setSize(15);
         aviaryCarnivorous.addAnimal(new Fish("Fish", AviarySize.LARGE));
-        aviaryCarnivorous.setSize(AviarySize.MIN);
+        aviaryCarnivorous.setSize(3);
         aviaryCarnivorous.addAnimal(new Hyena("Hyena", AviarySize.MIN));
         aviaryCarnivorous.addAnimal(new Hawk("Hawk", AviarySize.MIN));
-
 
         System.out.println("__________________________________________________");
 
