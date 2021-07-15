@@ -2,7 +2,7 @@ package food;
 
 public abstract class Food {
     private String name;
-    private short calorie;
+    private final short calorie;
 
     protected Food(short calorie) {
         this.calorie = calorie;

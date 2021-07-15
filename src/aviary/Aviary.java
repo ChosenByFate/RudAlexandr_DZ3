@@ -17,8 +17,12 @@ public class Aviary<T> {
         return aviaryFullness;
     }
 
-    public Aviary(int size){
-        this.aviarySize = size;
+    public void setAnimals(HashMap<Integer, T> animals) {
+        this.animals = animals;
+    }
+
+    public T getAnimal(String name){
+        return this.animals.get(name.hashCode());
     }
 
     public void setSize(int size) {
@@ -30,13 +34,13 @@ public class Aviary<T> {
         System.out.println("New size: " + this.aviarySize);
     }
 
-    public void setAnimals(HashMap<Integer, T> animals) {
-        this.animals = animals;
+    public Aviary(int size){
+        this.aviarySize = size;
     }
 
     public void addAnimal(T animal){
         final int animalSize = ((Animal)animal).getAviarySize().getSize();
-        if (animalSize <= aviarySize && animalSize <= aviarySize - aviaryFullness ) {
+        if (animalSize <= aviarySize - aviaryFullness) {
             if (this.animals.put(animal.hashCode(), animal) == null) {
                 System.out.println("Adding animal with key: " + animal.hashCode());
                 aviaryFullness += animalSize;
@@ -45,7 +49,8 @@ public class Aviary<T> {
                 System.out.println("Animal with key: " + animal.hashCode() + " already exists.");
         }
         else
-            System.out.println("Not enough space in this aviary.");
+            System.out.println("Not enough space in this aviary. Available: " + (aviarySize - aviaryFullness) +
+                    "; animal size: " + animalSize);
     }
 
     public void removeAnimal(T animal){
@@ -58,12 +63,17 @@ public class Aviary<T> {
     }
 
     public void removeAnimal(String name){
-        System.out.println("Removing animal with key: " + name.hashCode());
-        this.animals.remove(name.hashCode());
-    }
-
-    public T getAnimal(String name){
-        return this.animals.get(name.hashCode());
+        T animal = getAnimal(name);
+        if (animal != null) {
+            if (this.animals.remove(animal.hashCode()) != null) {
+                aviaryFullness -= ((Animal)animal).getAviarySize().getSize();
+                System.out.println("Removing animal with key: " + animal.hashCode());
+            }
+            else
+                System.out.println("Animal with key: " + animal.hashCode() + " not found.");
+        }
+        else
+            System.out.println("Animal with name " + name + " does not exist.");
     }
 
     public int animalsCount() {
